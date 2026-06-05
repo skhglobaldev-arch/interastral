@@ -1,0 +1,27 @@
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is signed in
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Secure Users Collection
+    match /users/{email} {
+      // Only the user with this email can read/write their own data.
+      allow read, write: if isSignedIn() && request.auth.token.email == email;
+    }
+
+    // Payment Processing (Backend Only)
+    match /processed_payments/{paymentId} {
+      allow read, write: if false; // Only allow backend (Admin SDK) to touch this
+    }
+
+    // IP Tracking (Backend Only)
+    match /ip_tracking/{ip} {
+      allow read, write: if false; // Only backend
+    }
+  }
+}

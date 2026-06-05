@@ -1,0 +1,7 @@
+{
+  "name": "Remix: Copy of Interastral",
+  "description": "دروازه‌ای به سوی ستارگان برای کشف رازهای گذشته، حال و آینده.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
