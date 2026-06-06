@@ -2,6 +2,7 @@
 import { readFileSync } from 'fs';
 import path from 'path';
 import { onRequest } from "firebase-functions/v2/https";
+import { defineSecret } from "firebase-functions/params";
 import express, { NextFunction } from 'express';
 import cors from 'cors';
 import * as admin from 'firebase-admin';
@@ -15,6 +16,8 @@ dotenv.config();
 
 // --- CONFIGURATION ---
 const app = express();
+const stripeSecretKey = defineSecret('STRIPE_SECRET_KEY');
+const stripeWebhookSecret = defineSecret('STRIPE_WEBHOOK_SECRET');
 
 let adminInitialized = false;
 let aiClient: GoogleGenAI | undefined;
@@ -81,7 +84,13 @@ app.use(cors({ origin: true }));
 
 // Use JSON parser for all routes EXCEPT the Stripe webhook
 app.use((req: any, res: any, next: NextFunction) => {
-  if (req.originalUrl.endsWith('/payment/webhook')) { 
+  const requestPaths = [req.originalUrl, req.url, req.path].filter(Boolean);
+  const isStripeWebhook = requestPaths.some((requestPath: string) => {
+    const cleanPath = requestPath.split('?')[0];
+    return cleanPath.endsWith('/payment/webhook');
+  });
+
+  if (isStripeWebhook) {
     next();
   } else {
     // Increase limit for base64 images
@@ -1262,7 +1271,8 @@ router.post('/payment/verify', async (req: any, res: any): Promise<any> => {
 router.post('/payment/webhook', express.raw({ type: 'application/json' }) as any, async (req: any, res: any): Promise<any> => {
   const sig = req.headers['stripe-signature'] as string;
   let event: Stripe.Event;
-  try { event = (await getStripe()).webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET as string); } catch (err: any) { return res.status(400).send(`Webhook Error: ${err.message}`); }
+  const webhookBody = req.rawBody || req.body;
+  try { event = (await getStripe()).webhooks.constructEvent(webhookBody, sig, process.env.STRIPE_WEBHOOK_SECRET as string); } catch (err: any) { return res.status(400).send(`Webhook Error: ${err.message}`); }
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
     // @ts-ignore
@@ -1461,5 +1471,5 @@ router.post('/user/share', async (req: any, res: any): Promise<any> => {
 app.use('/api', router);
 app.use('/', router);
 
-export const api = onRequest({ cors: true }, app as any);
+export const api = onRequest({ cors: true, secrets: [stripeSecretKey, stripeWebhookSecret] }, app as any);
 export const expressApp = app;
