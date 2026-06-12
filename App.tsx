@@ -13,6 +13,8 @@ import { generateReading } from './services/geminiService';
 
 // --- CONFIGURATION ---
 const API_URL = '/api';
+const BRAND_LOGO_IMAGE = '/assets/brand/interastral-logo.png';
+const BRAND_LOGO_IMAGE_ABSOLUTE = 'https://interastral.vision/assets/brand/interastral-logo.png';
 
 // Add html2canvas type to window
 declare global {
@@ -85,6 +87,7 @@ const SEO = ({ title, description, image, url }: { title: string, description: s
         setOg('og:description', description);
         if(image) setOg('og:image', image);
         if(url) setOg('og:url', url);
+        if(image) setMeta('twitter:image', image);
         
     }, [title, description, image, url]);
     return null;
@@ -290,7 +293,7 @@ const CircularCarousel = ({ items, onSelect, t }: { items: ModuleConfig[], onSel
          <div className="relative w-48 h-48 md:w-64 md:h-64 mb-6">
              <div className="absolute inset-0 rounded-full border border-purple-200/50 animate-[spin_8s_linear_infinite]"></div>
              <div className="absolute inset-[-10px] rounded-full border border-pink-500/20 animate-[spin_10s_linear_infinite_reverse]"></div>
-             <img src="https://firebasestorage.googleapis.com/v0/b/interastral-96645.firebasestorage.app/o/undefined%20-%20Imgur.gif?alt=media&token=ca769614-7162-4f03-854e-496dd7b0a81e" alt="Core" className="w-full h-full rounded-full object-cover opacity-90 relative z-10 shadow-[0_0_50px_rgba(168,85,247,0.4)]" />
+             <img src={BRAND_LOGO_IMAGE} alt="Interastral logo" className="w-full h-full rounded-full object-cover opacity-90 relative z-10 shadow-[0_0_50px_rgba(168,85,247,0.4)]" />
          </div>
          <p className="mt-2 text-[10px] md:text-sm tracking-[0.2em] font-cinzel font-bold max-w-lg leading-relaxed text-shimmer drop-shadow-[0_0_5px_rgba(192,132,252,0.5)]">
             {t.tagline}
@@ -493,7 +496,7 @@ const StoryTemplate = ({ result, elementRef, language, user }: { result: Reading
              
              {/* Header */}
              <div className="z-10 text-center w-full pt-6 border-b border-[#4c1d95]/50 pb-4 mb-4">
-                 <img src="https://firebasestorage.googleapis.com/v0/b/interastral-96645.firebasestorage.app/o/undefined%20-%20Imgur.gif?alt=media&token=ca769614-7162-4f03-854e-496dd7b0a81e" alt="Logo" className="w-20 h-20 rounded-full border-2 border-[#a855f7] shadow-[0_0_15px_#a855f7] mx-auto mb-3 object-cover" crossOrigin="anonymous" />
+                 <img src={BRAND_LOGO_IMAGE} alt="Logo" className="w-20 h-20 rounded-full border-2 border-[#a855f7] shadow-[0_0_15px_#a855f7] mx-auto mb-3 object-cover" crossOrigin="anonymous" />
                  <h2 className="text-[#f0abfc] text-2xl font-bold tracking-widest uppercase">INTERASTRAL</h2>
                  <p className="text-[#a855f7] text-xs tracking-[0.3em] uppercase mt-1">{storyT.tagline}</p>
              </div>
@@ -575,7 +578,7 @@ const Navbar = ({ user, language, setLanguage, onLogout, onLogin, onDashboard, o
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center cursor-pointer group" onClick={onHome}>
-            <div className="relative"><div className="absolute inset-0 bg-purple-600 rounded-full blur-md opacity-20 group-hover:opacity-50 transition-opacity animate-pulse"></div><img src="https://firebasestorage.googleapis.com/v0/b/interastral-96645.firebasestorage.app/o/undefined%20-%20Imgur.gif?alt=media&token=ca769614-7162-4f03-854e-496dd7b0a81e" alt="Logo" className="relative h-10 w-10 md:h-12 md:w-12 rounded-full border border-purple-400/20 group-hover:scale-105 transition-transform duration-500 z-10 opacity-90 group-hover:opacity-100"/></div>
+            <div className="relative"><div className="absolute inset-0 bg-purple-600 rounded-full blur-md opacity-20 group-hover:opacity-50 transition-opacity animate-pulse"></div><img src={BRAND_LOGO_IMAGE} alt="Logo" className="relative h-10 w-10 md:h-12 md:w-12 rounded-full border border-purple-400/20 group-hover:scale-105 transition-transform duration-500 z-10 opacity-90 group-hover:opacity-100"/></div>
             <div className="ml-4 flex flex-col justify-center"><h1 className="font-orbitron text-lg md:text-xl text-transparent bg-clip-text bg-gradient-to-r from-purple-200 to-pink-200 tracking-[0.15em] group-hover:text-white transition-colors">{t.appTitle}</h1><p className="hidden md:block text-[8px] text-purple-300/70 tracking-[0.3em] font-cinzel mt-1">{t.tagline.split(',')[0]}</p></div>
           </div>
 
@@ -1506,7 +1509,7 @@ const App = () => {
   const getSEOMetadata = () => {
       let title = t.appTitle + " | " + t.tagline;
       let description = "Discover your past life, tarot readings, and astrological destiny with Interastral AI.";
-      let image = "https://firebasestorage.googleapis.com/v0/b/interastral-96645.firebasestorage.app/o/undefined%20-%20Imgur.gif?alt=media&token=ca769614-7162-4f03-854e-496dd7b0a81e";
+      let image = BRAND_LOGO_IMAGE_ABSOLUTE;
 
       if (currentView === 'BLOG') {
           if (selectedBlogPost) {

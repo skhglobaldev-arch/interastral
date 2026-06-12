@@ -223,6 +223,8 @@ const READING_COSTS: Record<string, number> = {
   'RETURN_LOVE': 40, 'CAFE': 70, 'PAST_LIFE': 70, 'NATAL_CHART': 70
 };
 
+const BRAND_LOGO_IMAGE_URL = 'https://interastral.vision/assets/brand/interastral-logo.png';
+
 const COSMIC_QUOTES = [
   "The cosmos is within us. We are made of star-stuff. We are a way for the universe to know itself. – Carl Sagan",
   "Look up at the stars and not down at your feet. – Stephen Hawking",
@@ -306,7 +308,7 @@ const getEmailStyles = () => `
 const sendWelcomeEmail = async (email: string, name: string, code: string, lang: string) => {
   const t = getTranslation(lang);
   const styles = getEmailStyles();
-  const html = `<!DOCTYPE html><html><head><style>${styles}</style></head><body><div class="container"><div class="header"><img src="https://firebasestorage.googleapis.com/v0/b/interastral-96645.firebasestorage.app/o/undefined%20-%20Imgur.gif?alt=media&token=ca769614-7162-4f03-854e-496dd7b0a81e" alt="Interastral" class="logo"></div><div class="content"><div class="title">${t.welcomeTitle}</div><div class="text">Greetings, ${name}.</div><div class="text">${t.welcomeBody}</div><div class="referral-box"><span style="display:block; font-size:12px; color:#d8b4fe; letter-spacing:2px; text-transform:uppercase;">${t.yourCode}</span><span class="referral-code">${code}</span><span style="display:block; font-size:11px; color:#9ca3af; margin-top:5px;">${t.shareText}</span></div><div class="quote-box">"${COSMIC_QUOTES[Math.floor(Math.random() * COSMIC_QUOTES.length)]}"</div><a href="https://interastral.vision" class="btn">${t.enterVoid}</a></div><div class="footer">${t.footer} <br>Interastral Vision © 2025</div></div></body></html>`;
+  const html = `<!DOCTYPE html><html><head><style>${styles}</style></head><body><div class="container"><div class="header"><img src="${BRAND_LOGO_IMAGE_URL}" alt="Interastral" class="logo"></div><div class="content"><div class="title">${t.welcomeTitle}</div><div class="text">Greetings, ${name}.</div><div class="text">${t.welcomeBody}</div><div class="referral-box"><span style="display:block; font-size:12px; color:#d8b4fe; letter-spacing:2px; text-transform:uppercase;">${t.yourCode}</span><span class="referral-code">${code}</span><span style="display:block; font-size:11px; color:#9ca3af; margin-top:5px;">${t.shareText}</span></div><div class="quote-box">"${COSMIC_QUOTES[Math.floor(Math.random() * COSMIC_QUOTES.length)]}"</div><a href="https://interastral.vision" class="btn">${t.enterVoid}</a></div><div class="footer">${t.footer} <br>Interastral Vision © 2025</div></div></body></html>`;
   await (await getTransporter()).sendMail({ from: '"Interastral Vision" <no-reply@interastral.vision>', to: email, subject: `✨ ${t.welcomeTitle}`, html: html });
 };
 
@@ -319,14 +321,14 @@ const sendReadingEmail = async (email: string, reading: any, lang: string, statu
     const actionText = isCompleted ? t.enterVoid : t.pendingAction;
     let snippet = "";
     if (isCompleted && reading.content) { snippet = reading.content.replace(/---EMAIL_START---[\s\S]*---EMAIL_END---/, '').replace(/[#*`]/g, '').substring(0, 150) + "..."; }
-    const html = `<!DOCTYPE html><html><head><style>${styles}</style></head><body><div class="container"><div class="header"><img src="https://firebasestorage.googleapis.com/v0/b/interastral-96645.firebasestorage.app/o/undefined%20-%20Imgur.gif?alt=media&token=ca769614-7162-4f03-854e-496dd7b0a81e" alt="Interastral" class="logo"></div><div class="content"><div class="title">${title}</div><div class="text">${body}</div>${isCompleted ? `<div class="quote-box">"${reading.title}" <br><span style="font-size:12px; color:#d1d5db; margin-top:5px; display:block;">${snippet}</span></div>` : ''}<a href="https://interastral.vision" class="btn">${actionText}</a></div><div class="footer">${t.footer}</div></div></body></html>`;
+    const html = `<!DOCTYPE html><html><head><style>${styles}</style></head><body><div class="container"><div class="header"><img src="${BRAND_LOGO_IMAGE_URL}" alt="Interastral" class="logo"></div><div class="content"><div class="title">${title}</div><div class="text">${body}</div>${isCompleted ? `<div class="quote-box">"${reading.title}" <br><span style="font-size:12px; color:#d1d5db; margin-top:5px; display:block;">${snippet}</span></div>` : ''}<a href="https://interastral.vision" class="btn">${actionText}</a></div><div class="footer">${t.footer}</div></div></body></html>`;
     await (await getTransporter()).sendMail({ from: '"Interastral Vision" <no-reply@interastral.vision>', to: email, subject: title, html: html });
 };
 
 const sendReferralEmail = async (email: string, lang: string) => {
     const t = getTranslation(lang);
     const styles = getEmailStyles();
-    const html = `<!DOCTYPE html><html><head><style>${styles}</style></head><body><div class="container"><div class="header"><img src="https://firebasestorage.googleapis.com/v0/b/interastral-96645.firebasestorage.app/o/undefined%20-%20Imgur.gif?alt=media&token=ca769614-7162-4f03-854e-496dd7b0a81e" alt="Interastral" class="logo"></div><div class="content"><div class="title">${t.referralTitle}</div><div class="text">${t.referralBody}</div><div class="reward">${t.referralReward}</div><br><a href="https://interastral.vision" class="btn">${t.enterVoid}</a></div><div class="footer">${t.footer}</div></div></body></html>`;
+    const html = `<!DOCTYPE html><html><head><style>${styles}</style></head><body><div class="container"><div class="header"><img src="${BRAND_LOGO_IMAGE_URL}" alt="Interastral" class="logo"></div><div class="content"><div class="title">${t.referralTitle}</div><div class="text">${t.referralBody}</div><div class="reward">${t.referralReward}</div><br><a href="https://interastral.vision" class="btn">${t.enterVoid}</a></div><div class="footer">${t.footer}</div></div></body></html>`;
     await (await getTransporter()).sendMail({ from: '"Interastral Vision" <no-reply@interastral.vision>', to: email, subject: t.referralTitle, html: html });
 };
 

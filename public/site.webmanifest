@@ -1,0 +1,19 @@
+{
+  "name": "Interastral",
+  "short_name": "Interastral",
+  "icons": [
+    {
+      "src": "/assets/brand/interastral-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/brand/interastral-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#4c1d95",
+  "background_color": "#050214",
+  "display": "standalone"
+}
