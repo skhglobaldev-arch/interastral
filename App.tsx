@@ -15,6 +15,7 @@ import { generateReading } from './services/geminiService';
 const API_URL = '/api';
 const BRAND_LOGO_IMAGE = '/assets/brand/interastral-logo.png';
 const BRAND_LOGO_IMAGE_ABSOLUTE = 'https://interastral.vision/assets/brand/interastral-logo.png';
+const BRAND_LOGO_VIDEO = '/assets/brand/interastral-logo-motion.mp4';
 
 // Add html2canvas type to window
 declare global {
@@ -293,7 +294,17 @@ const CircularCarousel = ({ items, onSelect, t }: { items: ModuleConfig[], onSel
          <div className="relative w-48 h-48 md:w-64 md:h-64 mb-6">
              <div className="absolute inset-0 rounded-full border border-purple-200/50 animate-[spin_8s_linear_infinite]"></div>
              <div className="absolute inset-[-10px] rounded-full border border-pink-500/20 animate-[spin_10s_linear_infinite_reverse]"></div>
-             <img src={BRAND_LOGO_IMAGE} alt="Interastral logo" className="w-full h-full rounded-full object-cover opacity-90 relative z-10 shadow-[0_0_50px_rgba(168,85,247,0.4)]" />
+             <video
+               src={BRAND_LOGO_VIDEO}
+               poster={BRAND_LOGO_IMAGE}
+               className="w-full h-full rounded-full object-cover opacity-90 relative z-10 shadow-[0_0_50px_rgba(168,85,247,0.4)]"
+               autoPlay
+               muted
+               loop
+               playsInline
+               preload="auto"
+               aria-label="Interastral logo"
+             />
          </div>
          <p className="mt-2 text-[10px] md:text-sm tracking-[0.2em] font-cinzel font-bold max-w-lg leading-relaxed text-shimmer drop-shadow-[0_0_5px_rgba(192,132,252,0.5)]">
             {t.tagline}
